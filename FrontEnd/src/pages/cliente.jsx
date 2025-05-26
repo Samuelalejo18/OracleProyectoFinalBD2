@@ -239,171 +239,173 @@ function Cliente() {
         <div className="flex flex-col gap-4 mt-16">
           {clienteFiltrado ? (
             <div className="flex justify-center items-center divide-x divide-gray-200 w-full bg-neutral-900/50 rounded-xl h-18">
-                           {modoEdicionId === clienteFiltrado.COD_CLI ? (
-                  <input
-                    type="text"
-                    className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
-                    value={datosEditados.RSO_CLI || ""}
-                    onChange={(e) =>
-                      setDatosEditados({
-                        ...datosEditados,
-                        RSO_CLI: e.target.value,
-                      })
-                    }
-                  />
-                ) : (
-                  <span className="px-10 w-1/9 text-center">
-                    {clienteFiltrado.RSO_CLI}
-                  </span>
-                )}
-                {modoEdicionId === clienteFiltrado.COD_CLI ? (
-                  <input
-                    type="text"
-                    className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
-                    value={datosEditados.DIR_CLI || ""}
-                    onChange={(e) =>
-                      setDatosEditados({
-                        ...datosEditados,
-                        DIR_CLI: e.target.value,
-                      })
-                    }
-                  />
-                ) : (
-                  <span className="px-10 w-1/9 text-center">
-                    {clienteFiltrado.DIR_CLI}
-                  </span>
-                )}
-                {modoEdicionId === clienteFiltrado.COD_CLI ? (
-                  <input
-                    type="text"
-                    className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
-                    value={datosEditados.TLF_CLI || ""}
-                    onChange={(e) =>
-                      setDatosEditados({
-                        ...datosEditados,
-                        TLF_CLI: e.target.value,
-                      })
-                    }
-                  />
-                ) : (
-                  <span className="px-10 w-1/9 text-center">
-                    {clienteFiltrado.TLF_CLI}
-                  </span>
-                )}
-                {modoEdicionId === clienteFiltrado.COD_CLI ? (
-                  <input
-                    type="text"
-                    className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
-                    value={datosEditados.RUC_CLI || ""}
-                    onChange={(e) =>
-                      setDatosEditados({
-                        ...datosEditados,
-                        RUC_CLI: e.target.value,
-                      })
-                    }
-                  />
-                ) : (
-                  <span className="px-10 w-1/9 text-center">
-                    {clienteFiltrado.RUC_CLI}
-                  </span>
-                )}
-                {modoEdicionId === clienteFiltrado.COD_CLI ? (
-                  <input
-                    type="text"
-                    className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
-                    value={datosEditados.COD_DIS || ""}
-                    onChange={(e) =>
-                      setDatosEditados({
-                        ...datosEditados,
-                        COD_DIS: e.target.value,
-                      })
-                    }
-                  />
-                ) : (
-                  <span className="px-10 w-1/9 text-center">
-                    {clienteFiltrado.COD_DIS}
-                  </span>
-                )}
-                {modoEdicionId === clienteFiltrado.COD_CLI ? (
-                  <input
-                    type="text"
-                    className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
-                    value={datosEditados.FEC_REG || ""}
-                    onChange={(e) =>
-                      setDatosEditados({
-                        ...datosEditados,
-                        FEC_REG: e.target.value,
-                      })
-                    }
-                  />
-                ) : (
-                  <span className="px-10 w-1/9 text-center">
-                    {clienteFiltrado.FEC_REG}
-                  </span>
-                )}
-                {modoEdicionId === clienteFiltrado.COD_CLI ? (
-                  <input
-                    type="text"
-                    className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
-                    value={datosEditados.TIP_CLI || ""}
-                    onChange={(e) =>
-                      setDatosEditados({
-                        ...datosEditados,
-                        TIP_CLI: e.target.value,
-                      })
-                    }
-                  />
-                ) : (
-                  <span className="px-10 w-1/9 text-center">
-                    {clienteFiltrado.TIP_CLI}
-                  </span>
-                )}
-                {modoEdicionId === clienteFiltrado.COD_CLI ? (
-                  <input
-                    type="text"
-                    className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
-                    value={datosEditados.CON_CLI || ""}
-                    onChange={(e) =>
-                      setDatosEditados({
-                        ...datosEditados,
-                        CON_CLI: e.target.value,
-                      })
-                    }
-                  />
-                ) : (
-                  <span className="px-10 w-1/9 text-center">
-                    {clienteFiltrado.CON_CLI}
-                  </span>
-                )}
-                <span className="px-10 h-full flex flex-col justify-evenly w-1/9 text-center">
-                  {modoEdicionId === clienteFiltrado.COD_CLI ? (
-                    <button
-                      onClick={() => {
-                        actualizarCliente(clienteFiltrado.COD_CLI, datosEditados);
-                        setModoEdicionId(null);
-                      }}
-                      className="bg-green-500/50 text-sm text-white py-1 rounded-xl hover:bg-green-600/50 hover:scale-105 hover:underline transition-all cursor-pointer"
-                    >
-                      Guardar
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        setModoEdicionId(clienteFiltrado.COD_CLI);
-                        setDatosEditados({ ...clienteFiltrado }); // Copia datos actuales
-                      }}
-                      className="bg-green-500/50 text-sm text-white py-1 rounded-xl hover:bg-green-600/50 hover:scale-105 hover:underline transition-all cursor-pointer"
-                    >
-                      Editar
-                    </button>
-                  )}
-                  <button
-                    onClick={() => {}}
-                    className="bg-red-500/50 text-sm text-white px-2 py-1 rounded-xl hover:bg-red-600/50 hover:scale-105 hover:underline transition-all cursor-pointer"
-                  >
-                    Eliminar
-                  </button>
+              {modoEdicionId === clienteFiltrado.COD_CLI ? (
+                <input
+                  type="text"
+                  className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
+                  value={datosEditados.RSO_CLI || ""}
+                  onChange={(e) =>
+                    setDatosEditados({
+                      ...datosEditados,
+                      RSO_CLI: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <span className="px-10 w-1/9 text-center">
+                  {clienteFiltrado.RSO_CLI}
                 </span>
+              )}
+              {modoEdicionId === clienteFiltrado.COD_CLI ? (
+                <input
+                  type="text"
+                  className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
+                  value={datosEditados.DIR_CLI || ""}
+                  onChange={(e) =>
+                    setDatosEditados({
+                      ...datosEditados,
+                      DIR_CLI: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <span className="px-10 w-1/9 text-center">
+                  {clienteFiltrado.DIR_CLI}
+                </span>
+              )}
+              {modoEdicionId === clienteFiltrado.COD_CLI ? (
+                <input
+                  type="text"
+                  className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
+                  value={datosEditados.TLF_CLI || ""}
+                  onChange={(e) =>
+                    setDatosEditados({
+                      ...datosEditados,
+                      TLF_CLI: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <span className="px-10 w-1/9 text-center">
+                  {clienteFiltrado.TLF_CLI}
+                </span>
+              )}
+              {modoEdicionId === clienteFiltrado.COD_CLI ? (
+                <input
+                  type="text"
+                  className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
+                  value={datosEditados.RUC_CLI || ""}
+                  onChange={(e) =>
+                    setDatosEditados({
+                      ...datosEditados,
+                      RUC_CLI: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <span className="px-10 w-1/9 text-center">
+                  {clienteFiltrado.RUC_CLI}
+                </span>
+              )}
+              {modoEdicionId === clienteFiltrado.COD_CLI ? (
+                <input
+                  type="text"
+                  className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
+                  value={datosEditados.COD_DIS || ""}
+                  onChange={(e) =>
+                    setDatosEditados({
+                      ...datosEditados,
+                      COD_DIS: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <span className="px-10 w-1/9 text-center">
+                  {clienteFiltrado.COD_DIS}
+                </span>
+              )}
+              {modoEdicionId === clienteFiltrado.COD_CLI ? (
+                <input
+                  type="text"
+                  className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
+                  value={datosEditados.FEC_REG || ""}
+                  onChange={(e) =>
+                    setDatosEditados({
+                      ...datosEditados,
+                      FEC_REG: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <span className="px-10 w-1/9 text-center">
+                  {clienteFiltrado.FEC_REG}
+                </span>
+              )}
+              {modoEdicionId === clienteFiltrado.COD_CLI ? (
+                <input
+                  type="text"
+                  className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
+                  value={datosEditados.TIP_CLI || ""}
+                  onChange={(e) =>
+                    setDatosEditados({
+                      ...datosEditados,
+                      TIP_CLI: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <span className="px-10 w-1/9 text-center">
+                  {clienteFiltrado.TIP_CLI}
+                </span>
+              )}
+              {modoEdicionId === clienteFiltrado.COD_CLI ? (
+                <input
+                  type="text"
+                  className="px-2 py-1 w-full text-white rounded outline-none bg-transparent border-b"
+                  value={datosEditados.CON_CLI || ""}
+                  onChange={(e) =>
+                    setDatosEditados({
+                      ...datosEditados,
+                      CON_CLI: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <span className="px-10 w-1/9 text-center">
+                  {clienteFiltrado.CON_CLI}
+                </span>
+              )}
+              <span className="px-10 h-full flex flex-col justify-evenly w-1/9 text-center">
+                {modoEdicionId === clienteFiltrado.COD_CLI ? (
+                  <button
+                    onClick={() => {
+                      actualizarCliente(clienteFiltrado.COD_CLI, datosEditados);
+                      setModoEdicionId(null);
+                    }}
+                    className="bg-green-500/50 text-sm text-white py-1 rounded-xl hover:bg-green-600/50 hover:scale-105 hover:underline transition-all cursor-pointer"
+                  >
+                    Guardar
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setModoEdicionId(clienteFiltrado.COD_CLI);
+                      setDatosEditados({ ...clienteFiltrado }); // Copia datos actuales
+                    }}
+                    className="bg-green-500/50 text-sm text-white py-1 rounded-xl hover:bg-green-600/50 hover:scale-105 hover:underline transition-all cursor-pointer"
+                  >
+                    Editar
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    eliminarCliente(clienteFiltrado.COD_CLI);
+                  }}
+                  className="bg-red-500/50 text-sm text-white px-2 py-1 rounded-xl hover:bg-red-600/50 hover:scale-105 hover:underline transition-all cursor-pointer"
+                >
+                  Eliminar
+                </button>
+              </span>
             </div>
           ) : errorBusqueda ? (
             <p className="text-red-500">{errorBusqueda}</p>
@@ -573,8 +575,8 @@ function Cliente() {
                     </button>
                   )}
                   <button
-                    onClick={() => {}}
-                    className="bg-red-500/50 text-sm text-white px-2 py-1 rounded-xl hover:bg-red-600/50 hover:scale-105 hover:underline transition-all cursor-pointer"
+                    onClick={() => eliminarCliente(cliente.COD_CLI)}
+                    className="bg-red-500/50 text-sm text-white px-3 py-1 rounded-xl hover:bg-red-600/50 hover:scale-105 hover:underline transition-all cursor-pointer"
                   >
                     Eliminar
                   </button>
