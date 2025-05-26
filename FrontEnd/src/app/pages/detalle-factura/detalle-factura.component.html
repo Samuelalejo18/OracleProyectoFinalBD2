@@ -1,0 +1,137 @@
+<!-- Contenedor principal -->
+<div class="bg-[#242424] text-white h-full w-full p-10 flex flex-col gap-10">
+
+    <!-- Encabezado -->
+    <div class="flex justify-between items-center">
+        <h1 class="text-4xl font-bold">Detalle Factura</h1>
+
+        <div class="flex gap-2 items-center">
+            <!-- Botón Modal -->
+            <button type="button"
+                class="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-md transition"
+                data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Registrar Detalle
+            </button>
+
+            <!-- Input de búsqueda -->
+            <input type="text" placeholder="Buscar por Nº Factura"
+                class="bg-white text-black border border-gray-400 rounded-md px-4 py-2 w-64 outline-none" />
+
+            <!-- Botón Buscar -->
+            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition duration-300">
+                Buscar
+            </button>
+        </div>
+    </div>
+
+    <!-- Tabla de detalle factura -->
+    <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-700 bg-[#1a1a1a]">
+        <table class="min-w-full divide-y divide-gray-700">
+            <thead>
+                <tr
+                    class="bg-gradient-to-r from-red-700 via-red-600 to-red-700 text-white text-sm uppercase tracking-wider">
+                    <th scope="col" class="px-6 py-4 text-left">Nº Factura</th>
+                    <th scope="col" class="px-6 py-4 text-left">Código Producto</th>
+                    <th scope="col" class="px-6 py-4 text-left">Cantidad Vendida</th>
+                    <th scope="col" class="px-6 py-4 text-left">Precio Venta</th>
+                    <th scope="col" class="px-6 py-4 text-left">Editar</th>
+                    <th scope="col" class="px-6 py-4 text-left">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-700 text-sm">
+                @for (item of detalles; track item.NUM_FAC + '-' + item.COD_PRO) {
+                <tr class="hover:bg-[#2e2e2e] transition duration-200">
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.NUM_FAC }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.COD_PRO }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.CAN_VEN }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.PRE_VEN }}</td>
+
+                    <td>
+                        <button type="button" class="btn btn-danger" (click)="toggleEditDetalle(item.NUM_FAC, item.COD_PRO)">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" (click)="deleteDetalleEntry(item.NUM_FAC, item.COD_PRO)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Formulario de edición -->
+    <form *ngIf="editableDetalle" class="card p-2" (ngSubmit)="updateDetalleEntry()" [formGroup]="detalleForm">
+        <div class="mb-3">
+            <label for="NUM_FAC" class="form-label">Nº Factura</label>
+            <input type="text" class="form-control" id="NUM_FAC" placeholder="Número de factura"
+                formControlName="NUM_FAC">
+        </div>
+        <div class="mb-3">
+            <label for="COD_PRO" class="form-label">Código Producto</label>
+            <input type="text" class="form-control" id="COD_PRO" placeholder="Código de producto"
+                formControlName="COD_PRO">
+        </div>
+        <div class="mb-3">
+            <label for="CAN_VEN" class="form-label">Cantidad Vendida</label>
+            <input type="number" class="form-control" id="CAN_VEN" placeholder="Cantidad vendida"
+                formControlName="CAN_VEN">
+        </div>
+        <div class="mb-3">
+            <label for="PRE_VEN" class="form-label">Precio Venta</label>
+            <input type="number" step="0.01" class="form-control" id="PRE_VEN" placeholder="Precio de venta"
+                formControlName="PRE_VEN">
+        </div>
+        <div class="input-group justify-content-center md-12">
+            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Guardar</button>
+        </div>
+    </form>
+
+    <!-- Modal para registrar nuevo detalle -->
+    <div class="modal fade text-black" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-lg">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Detalle</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form class="card p-2" (ngSubmit)="crearDetalle()" [formGroup]="detalleForm">
+                        <div class="mb-3">
+                            <label class="form-label">Nº Factura</label>
+                            <input type="text" class="form-control" formControlName="NUM_FAC"
+                                placeholder="Número de factura">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Código Producto</label>
+                            <input type="text" class="form-control" formControlName="COD_PRO"
+                                placeholder="Código de producto">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Cantidad Vendida</label>
+                            <input type="number" class="form-control" formControlName="CAN_VEN"
+                                placeholder="Cantidad vendida">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Precio Venta</label>
+                            <input type="number" step="0.01" class="form-control" formControlName="PRE_VEN"
+                                placeholder="Precio de venta">
+                        </div>
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

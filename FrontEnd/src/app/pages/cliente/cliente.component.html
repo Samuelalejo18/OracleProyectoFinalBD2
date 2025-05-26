@@ -1,0 +1,205 @@
+<!-- Contenedor principal -->
+<div class="bg-[#242424] text-white h-full w-full p-10 flex flex-col gap-10">
+
+    <!-- Encabezado -->
+    <div class="flex justify-between items-center">
+        <h1 class="text-4xl font-bold">Cliente</h1>
+
+        <div class="flex gap-2 items-center">
+            <!-- Botón Modal -->
+            <button type="button"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md transition"
+                data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Registrar Cliente
+            </button>
+
+            <!-- Input de búsqueda -->
+            <input type="text" placeholder="Buscar por ID"
+                class="bg-white text-black border border-gray-400 rounded-md px-4 py-2 w-64 outline-none" />
+
+            <!-- Botón Buscar -->
+            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-300">
+                Buscar
+            </button>
+        </div>
+    </div>
+
+    <!-- Tabla de clientes -->
+    <!-- Contenedor tabla -->
+    <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-700 bg-[#1a1a1a]">
+        <table class="min-w-full divide-y divide-gray-700">
+            <thead>
+                <tr
+                    class="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 text-white text-sm uppercase tracking-wider">
+                    <th scope="col" class="px-6 py-4 text-left">Código</th>
+                    <th scope="col" class="px-6 py-4 text-left">Nombre</th>
+                    <th scope="col" class="px-6 py-4 text-left">Dirección</th>
+                    <th scope="col" class="px-6 py-4 text-left">Teléfono</th>
+                    <th scope="col" class="px-6 py-4 text-left">RUC</th>
+                    <th scope="col" class="px-6 py-4 text-left">Distrito</th>
+                    <th scope="col" class="px-6 py-4 text-left">Fecha registro</th>
+                    <th scope="col" class="px-6 py-4 text-left">Tipo</th>
+                    <th scope="col" class="px-6 py-4 text-left">Condición</th>
+                    <th scope="col" class="px-6 py-4 text-left">Editar</th>
+                    <th scope="col" class="px-6 py-4 text-left">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-700 text-sm">
+                @for (item of clientes; track item._id) {
+                <tr class="hover:bg-[#2e2e2e] transition duration-200">
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.COD_CLI }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.RSO_CLI }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.DIR_CLI }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.TLF_CLI }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.RUC_CLI }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.COD_DIS }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.FEC_REG_FORMAT }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.TIP_CLI }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.CON_CLI }}</td>
+
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="toggleEditCliente(item.COD_CLI)">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="deleteClienteEntry(item.COD_CLI)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+
+
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+    <form *ngIf="editableCliente" class="card p-2" (ngSubmit)="updateClienteEntry()" [formGroup]="clienteForm">
+        <div class="mb-3">
+            <label for="COD_CLI" class="form-label">Código</label>
+            <input type="text" class="form-control" id="COD_CLI" placeholder="Código del cliente"
+                formControlName="COD_CLI">
+        </div>
+        <div class="mb-3">
+            <label for="RSO_CLI" class="form-label">Razón Social</label>
+            <input type="text" class="form-control" id="RSO_CLI" placeholder="Razón social" formControlName="RSO_CLI">
+        </div>
+        <div class="mb-3">
+            <label for="DIR_CLI" class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="DIR_CLI" placeholder="Dirección" formControlName="DIR_CLI">
+        </div>
+        <div class="mb-3">
+            <label for="TLF_CLI" class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="TLF_CLI" placeholder="Teléfono" formControlName="TLF_CLI">
+        </div>
+        <div class="mb-3">
+            <label for="RUC_CLI" class="form-label">RUC</label>
+            <input type="text" class="form-control" id="RUC_CLI" placeholder="RUC" formControlName="RUC_CLI">
+        </div>
+        <div class="mb-3">
+            <label for="COD_DIS" class="form-label">Código Distrito</label>
+            <input type="text" class="form-control" id="COD_DIS" placeholder="Código distrito"
+                formControlName="COD_DIS">
+        </div>
+        <div class="mb-3">
+            <label for="FEC_REG" class="form-label">Fecha Registro</label>
+            <input type="date" class="form-control" id="FEC_REG" formControlName="FEC_REG">
+        </div>
+        <div class="mb-3">
+            <label for="TIP_CLI" class="form-label">Tipo de Cliente</label>
+            <input type="text" class="form-control" id="TIP_CLI" placeholder="Tipo de cliente"
+                formControlName="TIP_CLI">
+        </div>
+        <div class="mb-3">
+            <label for="CON_CLI" class="form-label">Condición Cliente</label>
+            <input type="text" class="form-control" id="CON_CLI" placeholder="Condición del cliente"
+                formControlName="CON_CLI">
+        </div>
+        <div class="input-group justify-content-center md-12">
+            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+        </div>
+    </form>
+
+
+    
+
+
+
+    <!-- Botón Ver Todos -->
+    <div class="flex justify-end">
+        <button
+            class="bg-blue-500/60 hover:bg-blue-600/80 text-white px-4 py-2 rounded-lg transition hover:scale-105 hover:underline">
+            Ver todos los clientes
+        </button>
+    </div>
+
+    <!-- Modal Bootstrap -->
+    <div class="modal fade text-black" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-lg">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo cliente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form class="card p-2" (ngSubmit)="crearCliente()" [formGroup]="clienteForm">
+                        <div class="mb-3">
+                            <label class="form-label">Código</label>
+                            <input type="text" class="form-control" formControlName="COD_CLI"
+                                placeholder="Código del cliente">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" formControlName="RSO_CLI"
+                                placeholder="Razón social">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Dirección</label>
+                            <input type="text" class="form-control" formControlName="DIR_CLI" placeholder="Dirección">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" formControlName="TLF_CLI" placeholder="Teléfono">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">RUC</label>
+                            <input type="text" class="form-control" formControlName="RUC_CLI" placeholder="RUC">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Código Distrito</label>
+                            <input type="text" class="form-control" formControlName="COD_DIS" placeholder="Distrito">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Fecha de Registro</label>
+                            <input type="date" class="form-control" formControlName="FEC_REG">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tipo Cliente</label>
+                            <input type="text" class="form-control" formControlName="TIP_CLI" placeholder="Tipo">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Condición</label>
+                            <input type="text" class="form-control" formControlName="CON_CLI" placeholder="Condición">
+                        </div>
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>

@@ -7,7 +7,7 @@ const getClientes = async (req, res) => {
     connection = await oracledb.getConnection();
 
     const result = await connection.execute(
-      `SELECT * FROM CLIENTE`,
+      `SELECT C.*, TO_CHAR(C.FEC_REG, 'DD-MM-YYYY') AS FEC_REG_FORMAT  FROM CLIENTE C`,
       [],
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
@@ -41,13 +41,13 @@ const getClienteById = async (req, res) => {
     let connection;
 
     try {
-        const { id } = req.params;
+        const {id} = req.params;
 
 
         connection = await oracledb.getConnection();
 
         const result = await connection.execute(
-            `SELECT * FROM CLIENTE WHERE COD_CLI = :id`,
+            `SELECT C.*, TO_CHAR(C.FEC_REG, 'DDMMYYYY') AS FEC_REG_FORMAT FROM CLIENTE C WHERE C.COD_CLI = :id`,
             [id],
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );

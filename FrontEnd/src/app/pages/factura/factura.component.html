@@ -1,0 +1,165 @@
+<!-- Contenedor principal -->
+<div class="bg-[#242424] text-white h-full w-full p-10 flex flex-col gap-10">
+
+  <!-- Encabezado -->
+  <div class="flex justify-between items-center">
+    <h1 class="text-4xl font-bold">Factura</h1>
+
+    <div class="flex gap-2 items-center">
+      <!-- Botón Modal -->
+      <button type="button"
+        class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold px-4 py-2 rounded-md transition"
+        data-bs-toggle="modal" data-bs-target="#facturaModal">
+        Registrar Factura
+      </button>
+
+      <!-- Input de búsqueda -->
+      <input type="text" placeholder="Buscar por Nº Factura"
+        class="bg-white text-black border border-gray-400 rounded-md px-4 py-2 w-64 outline-none" />
+
+      <!-- Botón Buscar -->
+      <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md transition duration-300">
+        Buscar
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabla de facturas -->
+  <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-700 bg-[#1a1a1a]">
+    <table class="min-w-full divide-y divide-gray-700">
+      <thead>
+        <tr class="bg-gradient-to-r from-yellow-700 via-yellow-600 to-yellow-700 text-white text-sm uppercase tracking-wider">
+          <th class="px-6 py-4 text-left">Nº Factura</th>
+          <th class="px-6 py-4 text-left">Fecha</th>
+          <th class="px-6 py-4 text-left">Cliente</th>
+          <th class="px-6 py-4 text-left">Fec. Cancelación</th>
+          <th class="px-6 py-4 text-left">Estado</th>
+          <th class="px-6 py-4 text-left">Vendedor</th>
+          <th class="px-6 py-4 text-left">% IGV</th>
+          <th class="px-6 py-4 text-left">Editar</th>
+          <th class="px-6 py-4 text-left">Eliminar</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-700 text-sm">
+        @for (item of facturas; track item.NUM_FAC) {
+        <tr class="hover:bg-[#2e2e2e] transition duration-200">
+          <td class="px-6 py-3 whitespace-nowrap">{{ item.NUM_FAC }}</td>
+          <td class="px-6 py-3 whitespace-nowrap">{{ item.FEC_FAC_FORMAT }}</td>
+          <td class="px-6 py-3 whitespace-nowrap">{{ item.COD_CLI }}</td>
+          <td class="px-6 py-3 whitespace-nowrap">{{ item.FEC_CAN_FORMAT }}</td>
+          <td class="px-6 py-3 whitespace-nowrap">{{ item.EST_FAC }}</td>
+          <td class="px-6 py-3 whitespace-nowrap">{{ item.COD_VEN }}</td>
+          <td class="px-6 py-3 whitespace-nowrap">{{ item.POR_IGV }}</td>
+          <td>
+            <button type="button" class="btn btn-warning" (click)="toggleEditFactura(item.NUM_FAC)">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+          </td>
+          <td>
+            <button type="button" class="btn btn-danger" (click)="deleteFacturaEntry(item.NUM_FAC)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Formulario de edición -->
+  <form *ngIf="editableFactura" class="card p-2" (ngSubmit)="updateFacturaEntry()" [formGroup]="facturaForm">
+    <div class="mb-3">
+      <label class="form-label">Nº Factura</label>
+      <input type="text" class="form-control" formControlName="NUM_FAC" placeholder="Número de factura">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Fecha Factura</label>
+      <input type="date" class="form-control" formControlName="FEC_FAC">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Código Cliente</label>
+      <input type="text" class="form-control" formControlName="COD_CLI" placeholder="Código cliente">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Fecha Cancelación</label>
+      <input type="date" class="form-control" formControlName="FEC_CAN">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Estado</label>
+      <input type="text" class="form-control" formControlName="EST_FAC" placeholder="Estado factura">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Código Vendedor</label>
+      <input type="text" class="form-control" formControlName="COD_VEN" placeholder="Código vendedor">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Porcentaje IGV</label>
+      <input type="number" class="form-control" formControlName="POR_IGV" step="0.01" placeholder="IGV %">
+    </div>
+    <div class="text-center mt-3">
+      <button type="submit" class="btn btn-warning" data-bs-dismiss="modal">Guardar</button>
+    </div>
+  </form>
+
+  <!-- Botón Ver Todos -->
+  <div class="flex justify-end">
+    <button
+      class="bg-yellow-500/60 hover:bg-yellow-600/80 text-white px-4 py-2 rounded-lg transition hover:scale-105 hover:underline">
+      Ver todas las facturas
+    </button>
+  </div>
+
+  <!-- Modal Bootstrap -->
+  <div class="modal fade text-black" id="facturaModal" tabindex="-1" aria-labelledby="facturaModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content rounded-lg">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="facturaModalLabel">Nueva Factura</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <form class="card p-2" (ngSubmit)="crearFactura()" [formGroup]="facturaForm">
+            <div class="mb-3">
+              <label class="form-label">Nº Factura</label>
+              <input type="text" class="form-control" formControlName="NUM_FAC" placeholder="Número de factura">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Fecha</label>
+              <input type="date" class="form-control" formControlName="FEC_FAC">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Código Cliente</label>
+              <input type="text" class="form-control" formControlName="COD_CLI">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Fecha Cancelación</label>
+              <input type="date" class="form-control" formControlName="FEC_CAN">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Estado</label>
+              <input type="text" class="form-control" formControlName="EST_FAC">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Código Vendedor</label>
+              <input type="text" class="form-control" formControlName="COD_VEN">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Porcentaje IGV</label>
+              <input type="number" class="form-control" formControlName="POR_IGV" step="0.01">
+            </div>
+            <div class="text-center mt-3">
+              <button type="submit" class="btn btn-warning" data-bs-dismiss="modal">Guardar</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
