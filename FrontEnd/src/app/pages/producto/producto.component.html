@@ -1,11 +1,21 @@
 <!-- Contenedor principal -->
-<div class="bg-[#1e2e1e] text-white h-full w-full p-10 flex flex-col gap-10">
+<div class="bg-[#1e2e1e] text-white h-full w-full p-10 flex flex-col gap-10" style="max-height: 100vh;">
 
     <!-- Encabezado -->
     <div class="flex justify-between items-center">
         <h1 class="text-4xl font-bold text-green-400">Producto</h1>
 
         <div class="flex gap-2 items-center">
+
+            <a routerLink="/">
+                <button type="button"
+                    class="bg-green-600  hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-md transition">
+                    Volver
+                </button>
+
+            </a>
+
+
             <!-- Botón Modal -->
             <button type="button"
                 class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-md transition"
@@ -14,11 +24,11 @@
             </button>
 
             <!-- Input de búsqueda -->
-            <input type="text" placeholder="Buscar por Código"
+            <input type="text" [(ngModel)]="searchId" placeholder="Buscar por ID" placeholder="Buscar por Código"
                 class="bg-white text-black border border-gray-400 rounded-md px-4 py-2 w-64 outline-none" />
 
             <!-- Botón Buscar -->
-            <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition duration-300">
+            <button (click)="buscarPorId()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition duration-300">
                 Buscar
             </button>
         </div>
@@ -54,10 +64,13 @@
                     <td class="px-6 py-3">{{ item.LIN_PRO }}</td>
                     <td class="px-6 py-3">{{ item.IMP_PRO }}</td>
                     <td>
-                        <button type="button" class="btn btn-success" (click)="toggleEditProducto(item.COD_PRO)">
+                        <button type="button" class="btn btn-success" (click)="toggleEditProducto(item.COD_PRO)"
+                            data-bs-toggle="modal" data-bs-target="#clienteEditModal">
                             <i class="bi bi-pencil-square"></i>
                         </button>
                     </td>
+
+
                     <td>
                         <button type="button" class="btn btn-danger" (click)="deleteProductoEntry(item.COD_PRO)">
                             <i class="bi bi-trash"></i>
@@ -69,25 +82,41 @@
         </table>
     </div>
 
-    <!-- Formulario de edición -->
-    <form *ngIf="editableProducto" class="card p-2" (ngSubmit)="updateProductoEntry()" [formGroup]="productoForm">
-        <div class="mb-3" *ngFor="let field of ['COD_PRO','DES_PRO','PRE_PRO','SAC_PRO','SME_PRO','UNI_PRO','LIN_PRO','IMP_PRO']">
-            <label [for]="field" class="form-label">{{ field }}</label>
-            <input type="text" class="form-control" [id]="field" [placeholder]="field" [formControlName]="field">
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="clienteEditModal" tabindex="-1" aria-labelledby="clienteEditModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form *ngIf="editableProducto" class="card p-2" (ngSubmit)="updateProductoEntry()"
+                    [formGroup]="productoForm">
+                    <div class="mb-3"
+                        *ngFor="let field of ['COD_PRO','DES_PRO','PRE_PRO','SAC_PRO','SME_PRO','UNI_PRO','LIN_PRO','IMP_PRO']">
+                        <label [for]="field" class="form-label">{{ field }}</label>
+                        <input type="text" class="form-control" [id]="field" [placeholder]="field"
+                            [formControlName]="field">
+                    </div>
+                    <div class="input-group justify-content-center md-12">
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="input-group justify-content-center md-12">
-            <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
-        </div>
-    </form>
+    </div>
 
 
 
-
-    
 
     <!-- Botón Ver Todos -->
     <div class="flex justify-end">
-        <button
+        <button (click)="getProductos()"
             class="bg-green-500/60 hover:bg-green-600/80 text-white px-4 py-2 rounded-lg transition hover:scale-105 hover:underline">
             Ver todos los productos
         </button>
@@ -105,7 +134,8 @@
 
                 <div class="modal-body">
                     <form class="card p-2" (ngSubmit)="crearProducto()" [formGroup]="productoForm">
-                        <div class="mb-3" *ngFor="let field of ['COD_PRO','DES_PRO','PRE_PRO','SAC_PRO','SME_PRO','UNI_PRO','LIN_PRO','IMP_PRO']">
+                        <div class="mb-3"
+                            *ngFor="let field of ['COD_PRO','DES_PRO','PRE_PRO','SAC_PRO','SME_PRO','UNI_PRO','LIN_PRO','IMP_PRO']">
                             <label class="form-label">{{ field }}</label>
                             <input type="text" class="form-control" [formControlName]="field" [placeholder]="field">
                         </div>

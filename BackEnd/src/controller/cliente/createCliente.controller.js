@@ -33,6 +33,19 @@ const createCliente = async (req, res) => {
       return res.status(409).json({ message: `Ya existe un cliente con el código ${COD_CLI.trim()}` });
     }
 
+
+    // Validar si el COD_DIS existe
+    const checkDistrito = await connection.execute(
+      `SELECT 1 FROM DISTRITO WHERE TRIM(COD_DIS) = :codigo`,
+      [COD_DIS.trim()],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+
+    if (checkDistrito.rows.length === 0) {
+      return res.status(400).json({ message: `El código de distrito ${COD_DIS.trim()} no existe` });
+    }
+
+
     // Si no existe, insertamos el cliente
     await connection.execute(
       `

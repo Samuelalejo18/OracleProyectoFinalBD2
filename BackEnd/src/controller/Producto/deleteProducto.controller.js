@@ -12,7 +12,7 @@ const deleteProducto = async (req, res) => {
 
         await connection.execute(
             `DELETE FROM PRODUCTO WHERE TRIM(COD_PRO) = :codigo`,
-            [id.trim()],
+            [id],
             { autoCommit: true }
         );
 

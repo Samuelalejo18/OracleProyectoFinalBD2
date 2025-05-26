@@ -9,10 +9,11 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-producto',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
   templateUrl: './producto.component.html',
   styleUrl: './producto.component.css',
 })
@@ -21,6 +22,7 @@ export class ProductoComponent implements OnInit {
   productoForm: FormGroup | any;
   idProducto: string = '';
   editableProducto: boolean = false;
+  searchId: string = '';
 
   constructor(
     private productoService: ProductoService,
@@ -61,7 +63,8 @@ export class ProductoComponent implements OnInit {
           confirmButtonText: 'OK',
           width: 400,
         });
-        this.getProductos();
+        this.getProductos(); // Recargar la lista
+        this.productoForm.reset();
       },
       error: (err) => {
         Swal.fire({
@@ -141,6 +144,31 @@ export class ProductoComponent implements OnInit {
           icon: 'error',
           title: 'Error al eliminar',
           text: err.error.message || 'Error desconocido',
+          confirmButtonText: 'OK',
+          width: 400,
+        });
+      },
+    });
+  }
+
+  buscarPorId() {
+    const id = this.searchId.trim();
+    if (!id) {
+      Swal.fire('Error', 'Ingrese un ID para buscar.', 'warning');
+      return;
+    }
+
+    this.productoService.getProducto(id).subscribe({
+      next: (producto) => {
+        this.productos = [producto]; 
+         this.searchId = ''; // Muestra solo el cliente encontrado
+      },
+      error: (err) => {
+        this.getProductos();
+        Swal.fire({
+          icon: 'error',
+          title: 'Producto no encontrado',
+          text: err.error?.message || 'No se encontró el producto con ese ID',
           confirmButtonText: 'OK',
           width: 400,
         });

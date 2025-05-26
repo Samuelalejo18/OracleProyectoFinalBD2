@@ -4,6 +4,7 @@ import { ClienteComponent } from './pages/cliente/cliente.component';
 import { ProductoComponent } from './pages/producto/producto.component';
 import { DetalleFacturaComponent } from './pages/detalle-factura/detalle-factura.component';
 import { FacturaComponent } from './pages/factura/factura.component';
+import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
 
 export const routes: Routes = [
   { path: '', component: MainComponent },
@@ -11,4 +12,5 @@ export const routes: Routes = [
   { path: 'producto', component: ProductoComponent },
   { path: 'detalleFactura', component: DetalleFacturaComponent },
   { path: 'factura', component: FacturaComponent },
+  { path: 'auditoria', component: AuditoriaComponent },
 ];

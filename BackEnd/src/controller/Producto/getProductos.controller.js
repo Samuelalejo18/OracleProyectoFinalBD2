@@ -7,7 +7,7 @@ const getProductos = async (req, res) => {
     connection = await oracledb.getConnection();
 
     const result = await connection.execute(
-      `SELECT * FROM PRODUCTO`,
+      `SELECT * FROM PRODUCTO ORDER BY COD_PRO `,
       [],
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );

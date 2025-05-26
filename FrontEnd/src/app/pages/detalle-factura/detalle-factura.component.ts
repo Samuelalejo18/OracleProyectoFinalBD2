@@ -9,18 +9,22 @@ import {
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { DetalleFacturaService } from '../../services/detalle-factura.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-detalle-factura',
-  imports: [FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [FormsModule, RouterModule, CommonModule, ReactiveFormsModule],
   templateUrl: './detalle-factura.component.html',
   styleUrl: './detalle-factura.component.css',
 })
 export class DetalleFacturaComponent implements OnInit {
   detalles: any[] = [];
-  detalleForm: FormGroup | any;;
+  detalleForm: FormGroup | any;
+  searchNumFac: string = '';
   numFac: string = '';
+  codPro: string = '';
   editableDetalle: boolean = false;
+  searchCodPro: string = '';
 
   constructor(
     private detalleService: DetalleFacturaService,
@@ -78,7 +82,7 @@ export class DetalleFacturaComponent implements OnInit {
       }
     }
     this.detalleService
-      .updateDetalle(this.numFac, this.detalleForm.value)
+      .updateDetalle(this.numFac, this.codPro, this.detalleForm.value)
       .subscribe({
         next: (response) => {
           Swal.fire({
@@ -104,6 +108,7 @@ export class DetalleFacturaComponent implements OnInit {
 
   toggleEditDetalle(numFac: any, codPro: any) {
     this.numFac = numFac;
+    this.codPro = codPro;
     this.detalleService.getDetalle(numFac, codPro).subscribe((data) => {
       this.detalleForm.setValue({
         NUM_FAC: data.NUM_FAC,
@@ -111,7 +116,7 @@ export class DetalleFacturaComponent implements OnInit {
         CAN_VEN: data.CAN_VEN,
         PRE_VEN: data.PRE_VEN,
       });
-      this.editableDetalle = true;
+      this.editableDetalle = !this.editableDetalle;
     });
   }
 
@@ -132,6 +137,39 @@ export class DetalleFacturaComponent implements OnInit {
           icon: 'error',
           title: 'Error al eliminar el detalle',
           text: err.error.message || 'Error al eliminar el detalle',
+          confirmButtonText: 'OK',
+          width: 400,
+        });
+      },
+    });
+  }
+
+  buscarPorNumFac() {
+    const numFac = this.searchNumFac.trim();
+    const codPro = this.searchCodPro.trim();
+
+    if (!numFac || !codPro) {
+      Swal.fire(
+        'Error',
+        'Ingrese ambos campos: Número de Factura y Código del Producto.',
+        'warning'
+      );
+      return;
+    }
+
+    this.detalleService.getDetalle(numFac, codPro).subscribe({
+      next: (data) => {
+        this.detalles = [data];
+        this.searchNumFac = '';
+        this.searchCodPro = '';
+      },
+      error: (err) => {
+        this.getDetalles(); // Vuelve a mostrar todos los clientes si la búsqueda falla
+        Swal.fire({
+          icon: 'error',
+          title: 'Detalle no encontrado',
+          text:
+            err.error?.message || 'No se encontró un detalle con esos datos.',
           confirmButtonText: 'OK',
           width: 400,
         });

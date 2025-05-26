@@ -9,9 +9,10 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-cliente',
-  imports: [FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [FormsModule, RouterModule, CommonModule, ReactiveFormsModule],
   templateUrl: './cliente.component.html',
   styleUrl: './cliente.component.css',
 })
@@ -20,6 +21,7 @@ export class ClienteComponent implements OnInit {
   clienteForm: FormGroup | any;
   idCliente: string = '';
   editableCliente: boolean = false;
+  searchId: string = '';
 
   constructor(
     private clienteService: ClienteService,
@@ -94,14 +96,16 @@ export class ClienteComponent implements OnInit {
             width: 400,
             text: response.message,
           });
-          this.getClientes(); // Actualiza la lista de clientes
+          this.getClientes();
+          // Recargar la lista
+          // Actualiza la lista de clientes
         },
         error: (err) => {
           Swal.fire({
             icon: 'error',
             title: 'Error al actualizar el cliente',
             // si usas `html`, SweetAlert no mostrará `text`
-            text: err.error.message || 'Error al crear el cliente',
+            text: err || 'Error al actualizar el cliente',
             confirmButtonText: 'OK',
             width: 400,
           });
@@ -148,6 +152,31 @@ export class ClienteComponent implements OnInit {
           title: 'Error al aliminar el cliente',
           // si usas `html`, SweetAlert no mostrará `text`
           text: err.error.message || 'Error al crear el cliente',
+          confirmButtonText: 'OK',
+          width: 400,
+        });
+      },
+    });
+  }
+
+  buscarPorId() {
+    const id = this.searchId.trim();
+    if (!id) {
+      Swal.fire('Error', 'Ingrese un ID para buscar.', 'warning');
+      return;
+    }
+
+    this.clienteService.getCliente(id).subscribe({
+      next: (cliente) => {
+        this.clientes = [cliente];
+        this.searchId = ''; // Muestra solo el cliente encontrado
+      },
+      error: (err) => {
+        this.getClientes(); // Vuelve a mostrar todos los clientes si no se encuentra el ID
+        Swal.fire({
+          icon: 'error',
+          title: 'Cliente no encontrado',
+          text: err.error?.message || 'No se encontró un cliente con ese ID',
           confirmButtonText: 'OK',
           width: 400,
         });

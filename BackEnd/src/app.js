@@ -5,6 +5,7 @@ const routerCliente= require("../src/routes/cliente/cliente.route");
 const  routerProducto= require("../src/routes/Producto/producto.route");
 const routerFactura = require("../src/routes/factura/factura.route")
 const routerDetalleFactura = require("./routes/DetalleFactura/detalleFactura.route")
+const routerAuditoria = require("../src/routes/audiforia.route")
 // Middlewares
 server.use(
   cors({
@@ -21,6 +22,6 @@ server.use("/api", routerCliente);
 server.use("/api", routerProducto);
 server.use("/api", routerFactura);
 server.use("/api", routerDetalleFactura );
-
+server.use("/api", routerAuditoria);
 
 module.exports = server;

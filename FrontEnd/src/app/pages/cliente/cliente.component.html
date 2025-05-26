@@ -1,5 +1,5 @@
 <!-- Contenedor principal -->
-<div class="bg-[#242424] text-white h-full w-full p-10 flex flex-col gap-10">
+<div class="bg-[#242424] text-white h-full w-full p-10 flex flex-col gap-10" style="box-sizing: border-box; max-height: 100vh; ">
 
     <!-- Encabezado -->
     <div class="flex justify-between items-center">
@@ -7,6 +7,14 @@
 
         <div class="flex gap-2 items-center">
             <!-- Botón Modal -->
+            <a routerLink="/">
+                <button type="button"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md transition">
+                    Volver
+                </button>
+
+            </a>
+
             <button type="button"
                 class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md transition"
                 data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -14,11 +22,12 @@
             </button>
 
             <!-- Input de búsqueda -->
-            <input type="text" placeholder="Buscar por ID"
+            <input type="text" [(ngModel)]="searchId" placeholder="Buscar por ID"
                 class="bg-white text-black border border-gray-400 rounded-md px-4 py-2 w-64 outline-none" />
 
             <!-- Botón Buscar -->
-            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-300">
+            <button (click)="buscarPorId()"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-300">
                 Buscar
             </button>
         </div>
@@ -58,7 +67,8 @@
                     <td class="px-6 py-3 whitespace-nowrap">{{ item.CON_CLI }}</td>
 
                     <td>
-                        <button type="button" class="btn btn-primary" (click)="toggleEditCliente(item.COD_CLI)">
+                        <button type="button" class="btn btn-primary" (click)="toggleEditCliente(item.COD_CLI)"
+                            data-bs-toggle="modal" data-bs-target="#clienteEditModal">
                             <i class="bi bi-pencil-square"></i>
                         </button>
                     </td>
@@ -78,60 +88,14 @@
 
 
 
-    <form *ngIf="editableCliente" class="card p-2" (ngSubmit)="updateClienteEntry()" [formGroup]="clienteForm">
-        <div class="mb-3">
-            <label for="COD_CLI" class="form-label">Código</label>
-            <input type="text" class="form-control" id="COD_CLI" placeholder="Código del cliente"
-                formControlName="COD_CLI">
-        </div>
-        <div class="mb-3">
-            <label for="RSO_CLI" class="form-label">Razón Social</label>
-            <input type="text" class="form-control" id="RSO_CLI" placeholder="Razón social" formControlName="RSO_CLI">
-        </div>
-        <div class="mb-3">
-            <label for="DIR_CLI" class="form-label">Dirección</label>
-            <input type="text" class="form-control" id="DIR_CLI" placeholder="Dirección" formControlName="DIR_CLI">
-        </div>
-        <div class="mb-3">
-            <label for="TLF_CLI" class="form-label">Teléfono</label>
-            <input type="text" class="form-control" id="TLF_CLI" placeholder="Teléfono" formControlName="TLF_CLI">
-        </div>
-        <div class="mb-3">
-            <label for="RUC_CLI" class="form-label">RUC</label>
-            <input type="text" class="form-control" id="RUC_CLI" placeholder="RUC" formControlName="RUC_CLI">
-        </div>
-        <div class="mb-3">
-            <label for="COD_DIS" class="form-label">Código Distrito</label>
-            <input type="text" class="form-control" id="COD_DIS" placeholder="Código distrito"
-                formControlName="COD_DIS">
-        </div>
-        <div class="mb-3">
-            <label for="FEC_REG" class="form-label">Fecha Registro</label>
-            <input type="date" class="form-control" id="FEC_REG" formControlName="FEC_REG">
-        </div>
-        <div class="mb-3">
-            <label for="TIP_CLI" class="form-label">Tipo de Cliente</label>
-            <input type="text" class="form-control" id="TIP_CLI" placeholder="Tipo de cliente"
-                formControlName="TIP_CLI">
-        </div>
-        <div class="mb-3">
-            <label for="CON_CLI" class="form-label">Condición Cliente</label>
-            <input type="text" class="form-control" id="CON_CLI" placeholder="Condición del cliente"
-                formControlName="CON_CLI">
-        </div>
-        <div class="input-group justify-content-center md-12">
-            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
-        </div>
-    </form>
 
 
-    
 
 
 
     <!-- Botón Ver Todos -->
     <div class="flex justify-end">
-        <button
+        <button (click)="getClientes()"
             class="bg-blue-500/60 hover:bg-blue-600/80 text-white px-4 py-2 rounded-lg transition hover:scale-105 hover:underline">
             Ver todos los clientes
         </button>
@@ -199,6 +163,69 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="clienteEditModal" tabindex="-1" aria-labelledby="clienteEditModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form (ngSubmit)="updateClienteEntry()" [formGroup]="clienteForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="clienteEditModalLabel">Editar Cliente</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Todos los campos dentro del modal-body -->
+                        <div class="mb-3">
+                            <label for="COD_CLI" class="form-label">Código</label>
+                            <input type="text" class="form-control" id="COD_CLI" formControlName="COD_CLI" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="RSO_CLI" class="form-label">Razón Social</label>
+                            <input type="text" class="form-control" id="RSO_CLI" formControlName="RSO_CLI">
+                        </div>
+                        <div class="mb-3">
+                            <label for="DIR_CLI" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" id="DIR_CLI" formControlName="DIR_CLI">
+                        </div>
+                        <div class="mb-3">
+                            <label for="TLF_CLI" class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" id="TLF_CLI" formControlName="TLF_CLI">
+                        </div>
+                        <div class="mb-3">
+                            <label for="RUC_CLI" class="form-label">RUC</label>
+                            <input type="text" class="form-control" id="RUC_CLI" formControlName="RUC_CLI">
+                        </div>
+                        <div class="mb-3">
+                            <label for="COD_DIS" class="form-label">Código Distrito</label>
+                            <input type="text" class="form-control" id="COD_DIS" formControlName="COD_DIS">
+                        </div>
+                        <div class="mb-3">
+                            <label for="FEC_REG" class="form-label">Fecha Registro</label>
+                            <input type="date" class="form-control" id="FEC_REG" formControlName="FEC_REG">
+                        </div>
+                        <div class="mb-3">
+                            <label for="TIP_CLI" class="form-label">Tipo de Cliente</label>
+                            <input type="text" class="form-control" id="TIP_CLI" formControlName="TIP_CLI">
+                        </div>
+                        <div class="mb-3">
+                            <label for="CON_CLI" class="form-label">Condición Cliente</label>
+                            <input type="text" class="form-control" id="CON_CLI" formControlName="CON_CLI">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 
 
 

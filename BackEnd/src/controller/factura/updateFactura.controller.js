@@ -8,6 +8,30 @@ const updateFactura = async (req, res) => {
 
     try {
         connection = await oracledb.getConnection();
+
+       // Validar que exista el cliente
+        const checkCliente = await connection.execute(
+            `SELECT 1 FROM CLIENTE WHERE TRIM(COD_CLI) = :codigo`,
+            [COD_CLI.trim()],
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+        if (checkCliente.rows.length === 0) {
+            return res.status(400).json({ message: `El código de cliente ${COD_CLI.trim()} no existe` });
+        }
+
+        // Validar que exista el vendedor
+        const checkVendedor = await connection.execute(
+            `SELECT 1 FROM VENDEDOR WHERE TRIM(COD_VEN) = :codigo`,
+            [COD_VEN.trim()],
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+        if (checkVendedor.rows.length === 0) {
+            return res.status(400).json({ message: `El código de vendedor ${COD_VEN.trim()} no existe` });
+        }
+
+
         const result = await connection.execute(
             `UPDATE FACTURA
        SET FEC_FAC = TO_DATE(:1, 'YYYY-MM-DD'),

@@ -1,0 +1,136 @@
+<!-- Contenedor principal -->
+<div class="bg-[#2a1e0a] text-white h-full w-full p-10 flex flex-col gap-10"
+    style="box-sizing: border-box; max-height: 100vh;">
+
+    <!-- Encabezado -->
+    <div class="flex justify-between items-center">
+        <h1 class="text-4xl font-bold text-orange-500">Auditoría</h1>
+        <h2>{{ tituloActual }}</h2>
+
+        <div class="flex gap-2 items-center">
+            <!-- Botón Volver -->
+            <a routerLink="/">
+                <button type="button"
+                    class="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-4 py-2 rounded-md transition">
+                    Volver
+                </button>
+            </a>
+
+
+        </div>
+    </div>
+
+    <!-- Tabla de auditoría -->
+    <div class="overflow-x-auto rounded-xl shadow-lg border border-orange-700 bg-[#331f0d]">
+        <table class="min-w-full divide-y divide-orange-700">
+            <thead>
+                <tr
+                    class="bg-gradient-to-r from-orange-700 via-orange-600 to-orange-700 text-white text-sm uppercase tracking-wider">
+                    <th scope="col" class="px-6 py-4 text-left">ID</th>
+                    <th scope="col" class="px-6 py-4 text-left">Nombre tabla</th>
+                    <th scope="col" class="px-6 py-4 text-left">Tipo operación</th>
+                    <th scope="col" class="px-6 py-4 text-left">Usuario BDD</th>
+                    <th scope="col" class="px-6 py-4 text-left">Fecha operación</th>
+                    <th scope="col" class="px-6 py-4 text-left">Detalle</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-orange-700 text-sm">
+                @for (item of auditorias; track item.id_audit) {
+                <tr class="hover:bg-[#4a2e0f] transition duration-200">
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.id_audit }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.nombre_tabla }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.tipo_operacion }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.usuario_bdd }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap">{{ item.fecha_operacion }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap max-w-xs truncate" title="{{ item.detalle }}">{{ item.detalle
+                        }}</td>
+                    <td>
+
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+<div class="flex flex-wrap gap-4 mb-6">
+  <button 
+    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow"
+    (click)="getAuditorias()"
+  >
+    Todas
+  </button>
+
+  <button 
+    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow"
+    (click)="getAuditoriaFactura()"
+  >
+    Factura
+  </button>
+
+  <button 
+    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow"
+    (click)="getAuditoriaProducto()"
+  >
+    Producto
+  </button>
+
+  <button 
+    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow"
+    (click)="getAuditoriaVendedor()"
+  >
+    Vendedor
+  </button>
+
+  <button 
+    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow"
+    (click)="getAuditoriaCliente()"
+  >
+    Cliente
+  </button>
+
+  <button 
+    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow"
+    (click)="getAuditoriaDetalleFactura()"
+  >
+    Detalle Factura
+  </button>
+
+  <button 
+    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow"
+    (click)="getAuditoriaDistrito()"
+  >
+    Distrito
+  </button>
+
+  <button 
+    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow"
+    (click)="getAuditoriaProveedor()"
+  >
+    Proveedor
+  </button>
+
+  <button 
+    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow"
+    (click)="getAuditoriaOrdenCompra()"
+  >
+    Orden Compra
+  </button>
+
+  <button 
+    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow"
+    (click)="getAuditoriaDetalleCompra()"
+  >
+    Detalle Compra
+  </button>
+
+  <button 
+    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow"
+    (click)="getAuditoriaAbastecimiento()"
+  >
+    Abastecimiento
+  </button>
+</div>
+
+
+</div>

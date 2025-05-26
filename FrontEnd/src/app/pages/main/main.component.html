@@ -1,32 +1,49 @@
-<div class="flex flex-col justify-center items-center h-screen w-screen gap-10">
-  <h1 class="text-6xl font-bold leading-none h-fit">
+<div class="d-flex flex-column justify-content-center align-items-center vh-100 vw-100 gap-4"
+  style="background-color: black; color: white;">
+  <h1 style="font-size: 3rem; font-weight: bold;">
     Proyecto Final Base De Datos
   </h1>
 
-  <div class="flex justify-center items-center gap-4 w-full">
-    <a
-      routerLink="/cliente"
-      class="text-2xl cursor-pointer bg-neutral-100 px-4 py-2 rounded-xl hover:scale-105 transition-all"
-    >
+  <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
+    <!-- Cliente: Azul -->
+    <a routerLink="/cliente"
+      style="font-size: 1.5rem; padding: 0.5rem 1rem; border-radius: 1rem; background-color: #1a1a1a; color: white; text-decoration: none; transition: all 0.3s;"
+      onmouseover="this.style.backgroundColor='#2563eb'; this.style.color='white'; this.style.transform='scale(1.1)'"
+      onmouseout="this.style.backgroundColor='#1a1a1a'; this.style.color='white'; this.style.transform='scale(1)'">
       Cliente
     </a>
-    <a
-      routerLink="/detalleFactura"
-      class="text-2xl cursor-pointer bg-neutral-700 px-4 py-2 rounded-xl hover:scale-105 transition-all"
-    >
-      Detalle factura
-    </a>
-    <a
-      routerLink="/producto"
-      class="text-2xl cursor-pointer bg-neutral-700 px-4 py-2 rounded-xl hover:scale-105 transition-all"
-    >
+
+    <!-- Producto: Verde -->
+    <a routerLink="/producto"
+      style="font-size: 1.5rem; padding: 0.5rem 1rem; border-radius: 1rem; background-color: #1a1a1a; color: white; text-decoration: none; transition: all 0.3s;"
+      onmouseover="this.style.backgroundColor='#16a34a'; this.style.color='white'; this.style.transform='scale(1.1)'"
+      onmouseout="this.style.backgroundColor='#1a1a1a'; this.style.color='white'; this.style.transform='scale(1)'">
       Producto
     </a>
-    <a
-      routerLink="/factura"
-      class="text-2xl cursor-pointer bg-neutral-700 px-4 py-2 rounded-xl hover:scale-105 transition-all"
-    >
+
+    <!-- Factura: Amarillo -->
+    <a routerLink="/factura"
+      style="font-size: 1.5rem; padding: 0.5rem 1rem; border-radius: 1rem; background-color: #1a1a1a; color: white; text-decoration: none; transition: all 0.3s;"
+      onmouseover="this.style.backgroundColor='#eab308'; this.style.color='black'; this.style.transform='scale(1.1)'"
+      onmouseout="this.style.backgroundColor='#1a1a1a'; this.style.color='white'; this.style.transform='scale(1)'">
       Factura
     </a>
+
+    <!-- Detalle factura: Rojo -->
+    <a routerLink="/detalleFactura"
+      style="font-size: 1.5rem; padding: 0.5rem 1rem; border-radius: 1rem; background-color: #1a1a1a; color: white; text-decoration: none; transition: all 0.3s;"
+      onmouseover="this.style.backgroundColor='#dc2626'; this.style.color='white'; this.style.transform='scale(1.1)'"
+      onmouseout="this.style.backgroundColor='#1a1a1a'; this.style.color='white'; this.style.transform='scale(1)'">
+      Detalle factura
+    </a>
+
+    <a routerLink="/auditoria"
+      style="font-size: 1.5rem; padding: 0.5rem 1rem; border-radius: 1rem; background-color: #1a1a1a; color: white; text-decoration: none; transition: all 0.3s;"
+      onmouseover="this.style.backgroundColor='#f97316'; this.style.color='white'; this.style.transform='scale(1.1)'"
+      onmouseout="this.style.backgroundColor='#1a1a1a'; this.style.color='white'; this.style.transform='scale(1)'">
+      Auditoria
+    </a>
+
+
   </div>
 </div>

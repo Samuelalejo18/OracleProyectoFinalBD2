@@ -1,24 +1,33 @@
 <!-- Contenedor principal -->
-<div class="bg-[#242424] text-white h-full w-full p-10 flex flex-col gap-10">
+<div class="bg-[#242424] text-white h-full w-full p-10 flex flex-col gap-10 " style="max-height: 100vh;">
 
     <!-- Encabezado -->
     <div class="flex justify-between items-center">
         <h1 class="text-4xl font-bold">Detalle Factura</h1>
 
         <div class="flex gap-2 items-center">
+            <a routerLink="/">
+                <button type="button"
+                    class="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-md transition">
+                    Volver
+                </button>
+            </a>
             <!-- Botón Modal -->
             <button type="button"
                 class="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-md transition"
-                data-bs-toggle="modal" data-bs-target="#exampleModal">
+                data-bs-toggle="modal" data-bs-target="#detalleFacturaModal">
                 Registrar Detalle
             </button>
 
             <!-- Input de búsqueda -->
-            <input type="text" placeholder="Buscar por Nº Factura"
+            <input [(ngModel)]="searchNumFac" type="text" placeholder="Buscar por Nº Factura"
+                class="bg-white text-black border border-gray-400 rounded-md px-4 py-2 w-64 outline-none" />
+            <input [(ngModel)]="searchCodPro" type="text" placeholder="Buscar por codigo Producto"
                 class="bg-white text-black border border-gray-400 rounded-md px-4 py-2 w-64 outline-none" />
 
             <!-- Botón Buscar -->
-            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition duration-300">
+            <button (click)="buscarPorNumFac()"
+                class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition duration-300">
                 Buscar
             </button>
         </div>
@@ -30,12 +39,13 @@
             <thead>
                 <tr
                     class="bg-gradient-to-r from-red-700 via-red-600 to-red-700 text-white text-sm uppercase tracking-wider">
-                    <th scope="col" class="px-6 py-4 text-left">Nº Factura</th>
-                    <th scope="col" class="px-6 py-4 text-left">Código Producto</th>
-                    <th scope="col" class="px-6 py-4 text-left">Cantidad Vendida</th>
-                    <th scope="col" class="px-6 py-4 text-left">Precio Venta</th>
-                    <th scope="col" class="px-6 py-4 text-left">Editar</th>
-                    <th scope="col" class="px-6 py-4 text-left">Eliminar</th>
+                    <th class="px-6 py-4 text-left">N° Factura</th>
+                    <th class="px-6 py-4 text-left">Código Producto</th>
+                    <th class="px-6 py-4 text-left">Cantidad Vendida</th>
+                    <th class="px-6 py-4 text-left">Precio Venta</th>
+                    <th class="px-6 py-4 text-left">Editar</th>
+                    <th class="px-6 py-4 text-left">Eliminar</th>
+
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-700 text-sm">
@@ -47,12 +57,15 @@
                     <td class="px-6 py-3 whitespace-nowrap">{{ item.PRE_VEN }}</td>
 
                     <td>
-                        <button type="button" class="btn btn-danger" (click)="toggleEditDetalle(item.NUM_FAC, item.COD_PRO)">
+                        <button type="button" class="btn btn-danger"
+                            (click)="toggleEditDetalle(item.NUM_FAC, item.COD_PRO)" data-bs-toggle="modal"
+                            data-bs-target="#detalleFacturaEditModal">
                             <i class="bi bi-pencil-square"></i>
                         </button>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-danger" (click)="deleteDetalleEntry(item.NUM_FAC, item.COD_PRO)">
+                        <button type="button" class="btn btn-danger"
+                            (click)="deleteDetalleEntry(item.NUM_FAC, item.COD_PRO)">
                             <i class="bi bi-trash"></i>
                         </button>
                     </td>
@@ -61,55 +74,33 @@
             </tbody>
         </table>
     </div>
+    <div class="flex justify-end">
+        <button (click)="getDetalles()"
+            class="bg-red-500/60 hover:bg-red-600/80 text-white px-4 py-2 rounded-lg transition hover:scale-105 hover:underline">
+            Ver todos los detalles
+        </button>
+    </div>
 
-    <!-- Formulario de edición -->
-    <form *ngIf="editableDetalle" class="card p-2" (ngSubmit)="updateDetalleEntry()" [formGroup]="detalleForm">
-        <div class="mb-3">
-            <label for="NUM_FAC" class="form-label">Nº Factura</label>
-            <input type="text" class="form-control" id="NUM_FAC" placeholder="Número de factura"
-                formControlName="NUM_FAC">
-        </div>
-        <div class="mb-3">
-            <label for="COD_PRO" class="form-label">Código Producto</label>
-            <input type="text" class="form-control" id="COD_PRO" placeholder="Código de producto"
-                formControlName="COD_PRO">
-        </div>
-        <div class="mb-3">
-            <label for="CAN_VEN" class="form-label">Cantidad Vendida</label>
-            <input type="number" class="form-control" id="CAN_VEN" placeholder="Cantidad vendida"
-                formControlName="CAN_VEN">
-        </div>
-        <div class="mb-3">
-            <label for="PRE_VEN" class="form-label">Precio Venta</label>
-            <input type="number" step="0.01" class="form-control" id="PRE_VEN" placeholder="Precio de venta"
-                formControlName="PRE_VEN">
-        </div>
-        <div class="input-group justify-content-center md-12">
-            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Guardar</button>
-        </div>
-    </form>
-
-    <!-- Modal para registrar nuevo detalle -->
-    <div class="modal fade text-black" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <!-- Modal: Crear Detalle Factura -->
+    <div class="modal fade text-black" id="detalleFacturaModal" tabindex="-1" aria-labelledby="detalleFacturaModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content rounded-lg">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Detalle</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h1 class="modal-title fs-5" id="detalleFacturaModalLabel">Nuevo Detalle Factura</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-
                 <div class="modal-body">
                     <form class="card p-2" (ngSubmit)="crearDetalle()" [formGroup]="detalleForm">
                         <div class="mb-3">
-                            <label class="form-label">Nº Factura</label>
+                            <label class="form-label">Número Factura</label>
                             <input type="text" class="form-control" formControlName="NUM_FAC"
                                 placeholder="Número de factura">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Código Producto</label>
                             <input type="text" class="form-control" formControlName="COD_PRO"
-                                placeholder="Código de producto">
+                                placeholder="Código del producto">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Cantidad Vendida</label>
@@ -118,20 +109,57 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Precio Venta</label>
-                            <input type="number" step="0.01" class="form-control" formControlName="PRE_VEN"
+                            <input type="number" class="form-control" formControlName="PRE_VEN"
                                 placeholder="Precio de venta">
                         </div>
                         <div class="text-center mt-3">
-                            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Guardar</button>
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
                         </div>
                     </form>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal: Editar Detalle Factura -->
+    <div class="modal fade" id="detalleFacturaEditModal" tabindex="-1" aria-labelledby="detalleFacturaEditModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form (ngSubmit)="updateDetalleEntry()" [formGroup]="detalleForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detalleFacturaEditModalLabel">Editar Detalle Factura</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="NUM_FAC" class="form-label">Número Factura</label>
+                            <input type="text" class="form-control" id="NUM_FAC" formControlName="NUM_FAC" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="COD_PRO" class="form-label">Código Producto</label>
+                            <input type="text" class="form-control" id="COD_PRO" formControlName="COD_PRO">
+                        </div>
+                        <div class="mb-3">
+                            <label for="CAN_VEN" class="form-label">Cantidad Vendida</label>
+                            <input type="number" class="form-control" id="CAN_VEN" formControlName="CAN_VEN">
+                        </div>
+                        <div class="mb-3">
+                            <label for="PRE_VEN" class="form-label">Precio Venta</label>
+                            <input type="number" class="form-control" id="PRE_VEN" formControlName="PRE_VEN">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
 </div>

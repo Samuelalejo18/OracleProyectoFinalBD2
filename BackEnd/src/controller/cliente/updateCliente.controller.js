@@ -11,11 +11,20 @@ const updateCliente = async (req, res) => {
       TLF_CLI,
       RUC_CLI,
       COD_DIS,
-      FEC_REG_FORMAT,
+      FEC_REG,
       TIP_CLI,
       CON_CLI,
     } = req.body;
+   // Validar si el COD_DIS existe
+    const checkDistrito = await connection.execute(
+      `SELECT 1 FROM DISTRITO WHERE TRIM(COD_DIS) = :codigo`,
+      [COD_DIS.trim()],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
 
+    if (checkDistrito.rows.length === 0) {
+      return res.status(400).json({ message: `El código de distrito ${COD_DIS.trim()} no existe` });
+    }
 
 
     connection = await oracledb.getConnection();
@@ -27,7 +36,7 @@ const updateCliente = async (req, res) => {
            TLF_CLI = :TLF_CLI,
            RUC_CLI = :RUC_CLI,
            COD_DIS = :COD_DIS,
-           FEC_REG = TO_DATE(:FEC_REG_FORMAT, 'YYYY-MM-DD'),
+           FEC_REG = TO_DATE(:FEC_REG, 'YYYY-MM-DD'),
            TIP_CLI = :TIP_CLI,
            CON_CLI = :CON_CLI
        WHERE COD_CLI = :id`,
@@ -37,7 +46,7 @@ const updateCliente = async (req, res) => {
         TLF_CLI,
         RUC_CLI,
         COD_DIS,
-        FEC_REG_FORMAT, // Este debe venir como 'YYYY-MM-DD' desde el input
+        FEC_REG, // Este debe venir como 'YYYY-MM-DD' desde el input
         TIP_CLI,
         CON_CLI,
         id,

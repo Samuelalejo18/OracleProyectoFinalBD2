@@ -13,12 +13,19 @@ export class DetalleFacturaService {
   constructor(private http: HttpClient) {}
 
   getAllDetalles(): Observable<any> {
-    return this.http.get<any>(environment.apiUrl + this.apiUri + 'getDetallesFactura');
+    return this.http.get<any>(
+      environment.apiUrl + this.apiUri + 'getDetallesFactura'
+    );
   }
 
   getDetalle(numFac: string, codPro: string): Observable<any> {
     return this.http.get<any>(
-      `${environment.apiUrl}${this.apiUri}getDetalle/${numFac}/${codPro}`
+      environment.apiUrl +
+        this.apiUri +
+        'getDetalleFactura/' +
+        numFac +
+        '/' +
+        codPro
     );
   }
 
@@ -30,9 +37,14 @@ export class DetalleFacturaService {
     );
   }
 
-  updateDetalle(numFac: string, data: any): Observable<any> {
+  updateDetalle(numFac: string, codPro: string, data: any): Observable<any> {
     return this.http.put<any>(
-      environment.apiUrl + this.apiUri + 'updateDetalle/' + numFac,
+      environment.apiUrl +
+        this.apiUri +
+        'updateDetalleFactura/' +
+        numFac +
+        '/' +
+        codPro,
       data,
       {
         headers: this.httpOptions,

@@ -34,10 +34,13 @@ export class ClienteService {
   }
 
   deleteCliente(id: any) {
-    return this.http.delete<any>(this.apiUri + 'deleteCliente/' + id, {
-      headers: this.httpOptions,
-      withCredentials: true,
-    });
+    return this.http.delete<any>(
+      environment.apiUrl + this.apiUri + 'deleteCliente/' + id,
+      {
+        headers: this.httpOptions,
+        withCredentials: true,
+      }
+    );
   }
 
   createCliente(data: any): Observable<any> {
